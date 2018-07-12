@@ -197,19 +197,19 @@ def call(airfoil, alfas='none', output='Cp', Reynolds=0, Mach=0,  # noqa C901
     # The following keys avoid the xfoil pop-up
     # source: http://stackoverflow.com/questions/1765078/how-to-avoid-
     # console-window-with-pyw-file-containing-os-system-call
-    startupinfo = sp.STARTUPINFO()
-    startupinfo.dwFlags |= sp.STARTF_USESHOWWINDOW
+    #startupinfo = sp.STARTUPINFO()
+    #startupinfo.dwFlags |= sp.STARTF_USESHOWWINDOW
     # Random output variable to avoid writing stuff from xfoil on the
     # console
     sout = 0
     # Calling xfoil with Poper
-    ps = sp.Popen(['xfoil.exe'],
+    ps = sp.Popen(['xfoil'],
                   stdin=sp.PIPE,
                   stdout=sout,
                   stderr=None,
-                  startupinfo=startupinfo,
-                  encoding='utf8')
-
+                  #startupinfo=startupinfo,
+                  #encoding='utf8')
+                )
     # Loading geometry
     if NORM is True:
         issueCmd('NORM')
@@ -933,7 +933,6 @@ def file_name(airfoil, alfas='none', output='Cp'):
 def find_coefficients(airfoil, alpha, Reynolds=0, iteration=10,
                       NACA=True, delete=False, PANE=False,
                       GDES=False):
-                      GDES = False):
 
     """Calculate the coefficients of an airfoil.
 
