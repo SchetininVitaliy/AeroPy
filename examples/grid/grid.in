@@ -1,0 +1,24 @@
+environment
+    tabular_data
+
+method
+  multidim_parameter_study
+    partitions 10
+
+variables
+  continuous_design = 1
+    upper_bounds    0.2
+    lower_bounds    0.1
+    descriptors     'ta_u'
+
+interface,              
+  fork              
+    analysis_drivers = 'airfoil_bb.py'
+  parameters_file = 'params.in'
+  results_file = 'results.out'
+
+responses
+  response_functions = 2
+  descriptors = 'Cl' 'Cd'
+  no_gradients
+  no_hessians
