@@ -1,0 +1,29 @@
+environment
+    tabular_data
+
+method
+  sampling
+    sample_type lhs
+    seed = 52983
+    samples = 10
+
+model
+  single
+
+variables
+  uniform_uncertain = 1
+    upper_bounds    0.2
+    lower_bounds    0.1
+    descriptors     'ta_u'
+
+interface,              
+  fork              
+    analysis_drivers = 'airfoil_bb.py'
+  parameters_file = 'params.in'
+  results_file = 'results.out'
+
+responses
+  response_functions = 2
+  descriptors = 'Cl' 'Cd'
+  no_gradients
+  no_hessians

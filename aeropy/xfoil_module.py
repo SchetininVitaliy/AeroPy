@@ -108,7 +108,7 @@ def call(airfoil, alfas='none', output='Cp', Reynolds=0, Mach=0,  # noqa C901
 
         @author: Hakan Tiftikci
         """
-        ps.stdin.write(cmd + '\n')
+        ps.stdin.write((cmd + '\n').encode())
         if echo:
             print(cmd)
 

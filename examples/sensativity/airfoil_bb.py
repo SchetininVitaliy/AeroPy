@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+
 from aeropy.AeroPy import find_3D_coefficients
 from aeropy.generators.nurbs import NURBS
-import matplotlib.pyplot as plt 
 import numpy as np
+import dakota.interfacing as di
 
+print(1)
 def rm_old_files(pattern):
 	import os, re, os.path
 	mypath = "."
@@ -14,10 +17,11 @@ rm_old_files("Polar_*")
 rm_old_files("Alfa_*")
 rm_old_files("airfoil.dat")
 
+params, results = di.read_parameters_file()
+
 '''Runs an example'''
 k ={}
-#sample coefficients: Coefficients for generating NACA5410
-k['ta_u'] = 0.1565
+k['ta_u'] = params['ta_u']
 k['ta_l'] = 0.1565
 k['tb_u'] = 2.1241
 k['tb_l'] = 1.8255
@@ -32,15 +36,10 @@ y = np.concatenate((pts[2],np.flip(pts[0],0)))
 
 np.savetxt('airfoil.dat',np.c_[x,y])
 
-def show(x,y):
-	plt.xlim(0,1)
-	plt.ylim(-.2,.2)
-	plt.plot(x,y)
-	plt.show()
-
-#show(x,y)
-
 res = find_3D_coefficients(airfoil='airfoil.dat',alpha=12.,NACA=False)
-print("\nC_D = %f"%res['C_D'])
-print("C_L = %f"%res['C_L'])
+print(res)
 
+results['Cd'].function = res['C_D']
+results['Cl'].function = res['C_L']
+
+results.write()
