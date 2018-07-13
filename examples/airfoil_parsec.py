@@ -1,5 +1,5 @@
 from aeropy.AeroPy import find_3D_coefficients
-from aeropy.generators.nurbs import NURBS
+from aeropy.generators.parsec import PARSEC
 import matplotlib.pyplot as plt 
 import numpy as np
 
@@ -14,21 +14,32 @@ rm_old_files("Polar_*")
 rm_old_files("Alfa_*")
 rm_old_files("airfoil.dat")
 
-'''Runs an example'''
-k ={}
-#sample coefficients: Coefficients for generating NACA5410
-k['ta_u'] = 0.1565
-k['ta_l'] = 0.1565
-k['tb_u'] = 2.1241
-k['tb_l'] = 1.8255
-k['alpha_b'] = 11.6983
-k['alpha_c'] = 3.8270
+'''Runs an example.'''
+k = {}
+# Sample coefficients
+k['rle'] = .01
+k['x_pre'] = .45
+k['y_pre'] = -0.006
+k['d2ydx2_pre'] = -.2
+k['th_pre'] = 2
+k['x_suc'] = .35
+k['y_suc'] = .055
+k['d2ydx2_suc'] = -.35
+k['th_suc'] = -10
 
-generator = NURBS(k)
-pts = generator._spline()
+# Trailing edge x and y position
+k['xte'] = 1.
+k['yte'] = 0.
 
-x = np.concatenate((pts[3],np.flip(pts[1],0)))
-y = np.concatenate((pts[2],np.flip(pts[0],0)))
+# Evaluate pressure (lower) surface coefficients
+test_airfoil = PARSEC(k)
+
+pts = test_airfoil.get_coords()
+
+print pts
+
+x = np.concatenate((pts[0],np.flip(pts[2],0)))
+y = np.concatenate((pts[1],np.flip(pts[3],0)))
 
 np.savetxt('airfoil.dat',np.c_[x,y])
 
